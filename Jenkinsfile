@@ -25,15 +25,23 @@ pipeline {
             } 
             }
 
-            // stage('Terraform Init') {
-            //     steps {
-            //         script{
-            //             dir("terraform")
-            //             {
-            //                 git "https://github.com/AnubhavSingh1801/terraform-test.git"
-            //             }
-            //         }
-            //     }
-            // }
+            stage('Create Resources') {
+                steps {
+                    script{
+                        if(env.OPERATION == 'apply') {
+                            dir("build") {
+                                sh ('terraform init')
+                                sh ('terraform plan')
+                                sh ('terraform apply --auto-approve')
+                            }
+                        }
+                        else if(env.OPERATION == 'destroy') {
+                            dir("build"){
+                                sh ('terraform destroy --auto-approve')
+                            }
+                        }
+                    }
+                }
+            }
     }
 }
