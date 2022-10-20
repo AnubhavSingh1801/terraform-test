@@ -1,3 +1,7 @@
+String branchName = "feature"
+String gitCredentials = "GITHUB"
+String repoUrl = "https://github.com/AnubhavSingh1801/terraform-test.git"
+
 pipeline {
     agent any
 
@@ -8,15 +12,26 @@ pipeline {
 
     stages {
 
-            stage('checkout') {
-                steps {
-                    script{
-                        dir("terraform")
-                        {
-                            git "https://github.com/AnubhavSingh1801/terraform-test.git"
-                        }
-                    }
-                }
-            }
+            stage('Clone') {
+                // Clones the repository from the current branch name
+                echo 'Make the output directory'
+                sh 'mkdir -p build'
+
+                echo 'Cloning files from (branch: "' + branchName + '" )'
+                dir('build') {
+                    git branch: branchName, credentialsId: 	gitCredentials, url: repoUrl
+                }     
+            } 
+
+            // stage('Terraform Init') {
+            //     steps {
+            //         script{
+            //             dir("terraform")
+            //             {
+            //                 git "https://github.com/AnubhavSingh1801/terraform-test.git"
+            //             }
+            //         }
+            //     }
+            // }
     }
 }
