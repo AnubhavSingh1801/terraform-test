@@ -13,6 +13,7 @@ pipeline {
     stages {
 
             stage('Clone') {
+                steps {
                 // Clones the repository from the current branch name
                 echo 'Make the output directory'
                 sh 'mkdir -p build'
@@ -22,6 +23,7 @@ pipeline {
                     git branch: branchName, credentialsId: 	gitCredentials, url: repoUrl
                 }     
             } 
+            }
 
             // stage('Terraform Init') {
             //     steps {
